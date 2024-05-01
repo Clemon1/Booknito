@@ -14,6 +14,8 @@ export const getUsersReport = async (req: Request, res: Response) => {
 
 export const getBookingReport = async (req: Request, res: Response) => {
   try {
+    //@ts-ignore
+
     const report = await getMonthlyCounts(bookings, 2024);
     res.status(200).json(report);
   } catch (err: any) {
