@@ -1,9 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authenticateSliceReducer from "./authRedux/appSLice";
+import { authApi } from "./RTK_Query/authSlice";
 export const store = configureStore({
   reducer: {
     auth: authenticateSliceReducer,
+    [authApi.reducerPath]: authApi.reducer,
   },
+
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat([authApi.middleware]),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
