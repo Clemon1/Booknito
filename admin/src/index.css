@@ -17,3 +17,12 @@ a {
   font-optical-sizing: auto;
   font-style: normal;
 }
+.nav-link {
+  background: inherit;
+  color: inherit;
+}
+
+.nav-link-active {
+  background: rgb(231, 254, 253);
+  color: #09bc8a;
+}

@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-
+import { useAppSelector } from "../redux/store";
 import { AppShell, Burger, Flex, Text, List } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
@@ -14,19 +14,16 @@ import {
 } from "@tabler/icons-react";
 import { NavLink } from "react-router-dom";
 import AvaterMenu from "./avatarMenu";
+import { currentUser } from "../redux/authRedux/appSLice";
 interface propType {
   children: ReactElement;
 }
+
 const Layout: React.FC<propType> = ({ children }) => {
   const [opened, { toggle }] = useDisclosure();
-  const navActive = {
-    background: "#09bc8a",
-    color: "#09bc8a",
-  };
-  const notActive = {
-    background: "inherit",
-    color: "inherit",
-  };
+
+  const user = useAppSelector(currentUser);
+
   return (
     <AppShell
       layout='alt'
@@ -60,8 +57,8 @@ const Layout: React.FC<propType> = ({ children }) => {
           <Flex w={"100%"} align={"center"} justify={"flex-end"}>
             <AvaterMenu
               image='https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-8.png'
-              name='Clemon Ezeh'
-              email='testmifun@outlook.com'
+              name={`${user?.details?.fullname}`}
+              email={`${user?.details?.email}`}
             />
           </Flex>
         </Flex>
@@ -91,8 +88,10 @@ const Layout: React.FC<propType> = ({ children }) => {
           fw={500}
           center>
           <NavLink
-            to={"/"}
-            style={({ isActive }) => (isActive ? navActive : notActive)}>
+            to={"/dashboard"}
+            className={({ isActive }) =>
+              isActive ? "nav-link-active" : "nav-link"
+            }>
             <List.Item
               w={"100%"}
               h={38}
@@ -107,7 +106,9 @@ const Layout: React.FC<propType> = ({ children }) => {
           </NavLink>
           <NavLink
             to={"/reservations"}
-            style={({ isActive }) => (isActive ? navActive : notActive)}>
+            className={({ isActive }) =>
+              isActive ? "nav-link-active" : "nav-link"
+            }>
             <List.Item
               w={"100%"}
               h={38}
@@ -122,7 +123,9 @@ const Layout: React.FC<propType> = ({ children }) => {
           </NavLink>
           <NavLink
             to={"/bookings"}
-            style={({ isActive }) => (isActive ? navActive : notActive)}>
+            className={({ isActive }) =>
+              isActive ? "nav-link-active" : "nav-link"
+            }>
             <List.Item
               w={"100%"}
               h={38}
@@ -137,7 +140,9 @@ const Layout: React.FC<propType> = ({ children }) => {
           </NavLink>
           <NavLink
             to={"/rooms"}
-            style={({ isActive }) => (isActive ? navActive : notActive)}>
+            className={({ isActive }) =>
+              isActive ? "nav-link-active" : "nav-link"
+            }>
             <List.Item
               w={"100%"}
               h={38}
@@ -152,7 +157,9 @@ const Layout: React.FC<propType> = ({ children }) => {
           </NavLink>
           <NavLink
             to={"/staffs"}
-            style={({ isActive }) => (isActive ? navActive : notActive)}>
+            className={({ isActive }) =>
+              isActive ? "nav-link-active" : "nav-link"
+            }>
             <List.Item
               w={"100%"}
               h={38}

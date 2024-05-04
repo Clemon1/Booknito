@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { serverURL } from "../URL";
 
 export interface IRegister {
   fullname: string;
@@ -6,14 +7,13 @@ export interface IRegister {
   password: string;
 }
 export interface ILogin {
-  fullname: string;
   email: string;
   password: string;
 }
 // register slice
 export const authApi = createApi({
   reducerPath: "authAPi",
-  baseQuery: fetchBaseQuery({ baseUrl: "/" }),
+  baseQuery: fetchBaseQuery({ baseUrl: `${serverURL}/auth` }),
   tagTypes: ["auth"],
   endpoints: (build) => ({
     // Register Endpoints
