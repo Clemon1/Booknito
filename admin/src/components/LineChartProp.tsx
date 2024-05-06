@@ -5,31 +5,31 @@ const LineChartProp = () => {
   const data = [
     {
       date: "Jan 22",
-      Apples: 890,
+      Bookings: 890,
     },
     {
       date: "Jan 22",
-      Apples: 1090,
+      Bookings: 1090,
     },
     {
       date: "Mar 22",
-      Apples: 2890,
+      Bookings: 2890,
     },
     {
       date: "Mar 23",
-      Apples: 2756,
+      Bookings: 2756,
     },
     {
       date: "Mar 24",
-      Apples: 3322,
+      Bookings: 3322,
     },
     {
       date: "Mar 25",
-      Apples: 3470,
+      Bookings: 3470,
     },
     {
       date: "Mar 26",
-      Apples: 3129,
+      Bookings: 3129,
     },
   ];
   interface ChartTooltipProps {
@@ -58,13 +58,15 @@ const LineChartProp = () => {
       w={"100%"}
       h={"90%"}
       data={data}
+      withTooltip={true}
+      withLegend={true}
       dataKey='date'
       tooltipProps={{
         content: ({ label, payload }) => (
           <ChartTooltip label={label} payload={payload} />
         ),
       }}
-      series={[{ name: "Apples", color: "rgb(9, 188, 138)" }]}
+      series={[{ name: "Bookings", color: "rgb(9, 188, 138)" }]}
       curveType='natural'
       fillOpacity={0.39}
     />

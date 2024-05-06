@@ -11,6 +11,9 @@ export interface IBooking {
   adults: number;
   children: number;
 }
+interface IRevenue {
+  total: number;
+}
 type BookingResponse = IBooking[];
 // register slice
 export const bookingApi = createApi({
@@ -20,6 +23,10 @@ export const bookingApi = createApi({
   endpoints: (build) => ({
     getAllBooking: build.query<BookingResponse, void>({
       query: () => `/viewBooking`,
+      providesTags: ["booking"],
+    }),
+    getBookingRevenue: build.query<IRevenue, void>({
+      query: () => `/revenue`,
       providesTags: ["booking"],
     }),
     singleBooking: build.query<IBooking, string>({
@@ -41,6 +48,7 @@ export const bookingApi = createApi({
 
 export const {
   useGetAllBookingQuery,
+  useGetBookingRevenueQuery,
   useSingleBookingQuery,
   useCreateBookingMutation,
 } = bookingApi;

@@ -9,7 +9,13 @@ export interface IRoom {
   price: number;
   maxGuest: number;
 }
+export interface Ivacant {
+  date: Date;
+  vacantRooms: [];
+  bookedRooms: [];
+}
 type roomResponse = IRoom[];
+// type vacantResponse = Ivacant[];
 // register slice
 export const roomApi = createApi({
   reducerPath: "roomAPi",
@@ -18,6 +24,10 @@ export const roomApi = createApi({
   endpoints: (build) => ({
     getAllRoom: build.query<roomResponse, void>({
       query: () => `/viewRooms`,
+      providesTags: ["room"],
+    }),
+    getVacantRoom: build.query<Ivacant, void>({
+      query: () => `/viewRooms/available`,
       providesTags: ["room"],
     }),
     singleRoom: build.query<IRoom, string>({
@@ -37,5 +47,9 @@ export const roomApi = createApi({
   }),
 });
 
-export const { useGetAllRoomQuery, useSingleRoomQuery, useCreateRoomMutation } =
-  roomApi;
+export const {
+  useGetAllRoomQuery,
+  useGetVacantRoomQuery,
+  useSingleRoomQuery,
+  useCreateRoomMutation,
+} = roomApi;

@@ -1,45 +1,75 @@
-import React, { ReactElement } from "react";
+import React from "react";
 import Layout from "../../components/layout";
-import { Flex, SimpleGrid, Text, ThemeIcon } from "@mantine/core";
+import { Flex, Loader, SimpleGrid, Text, ThemeIcon } from "@mantine/core";
 import LineChartProp from "../../components/LineChartProp";
 import {
   IconBedFilled,
   IconBuildingSkyscraper,
-  IconCalendarStats,
+  IconCashBanknoteFilled,
   IconVersionsFilled,
 } from "@tabler/icons-react";
 import TableProps from "../../components/table";
-
+import {
+  useGetAllBookingQuery,
+  useGetBookingRevenueQuery,
+} from "../../redux/RTK_Query/bookingSlice";
+import { useGetVacantRoomQuery } from "../../redux/RTK_Query/roomSlice";
 const Dashboard: React.FC = () => {
-  interface Ibox {
-    name: string;
-    total: number;
-    icon: ReactElement;
-    color: string;
-  }
+  const { data: allBooking = [], isLoading: bookingLoad } =
+    useGetAllBookingQuery();
+  const { data, isLoading: revLoad } = useGetBookingRevenueQuery();
+  const { data: room, isLoading: roomLoad } = useGetVacantRoomQuery();
 
   const boxtype = [
     {
       name: "Bookings",
-      total: 280,
+      total: bookingLoad ? (
+        <Loader color='#006d77' size='md' type='dots' />
+      ) : allBooking && allBooking.length <= 0 ? (
+        0
+      ) : (
+        allBooking.length
+      ),
       icon: <IconVersionsFilled />,
-      color: "#00406c",
+      color: "#0f87ff",
     },
     {
       name: "Vacant Rooms",
-      total: 25,
+      total: roomLoad ? (
+        <Loader color='#006d77' size='md' type='dots' />
+      ) : room && room?.bookedRooms.length <= 0 ? (
+        0
+      ) : (
+        room && room?.vacantRooms.length
+      ),
       icon: <IconBedFilled />,
       color: "#d62828",
     },
     {
-      name: "Today's Guest",
-      total: 30,
-      icon: <IconCalendarStats />,
-      color: "#00b4d8",
+      name: "Total Revenue (NGN)",
+      total: revLoad ? (
+        <Loader color='#006d77' size='md' type='dots' />
+      ) : data && data.total <= 0 ? (
+        0
+      ) : (
+        data &&
+        data?.total?.toLocaleString("en-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })
+      ),
+      icon: <IconCashBanknoteFilled />,
+      color: "#0cd488",
     },
     {
       name: "Todays Bookings",
-      total: 30,
+      total: roomLoad ? (
+        <Loader color='#006d77' size='md' type='dots' />
+      ) : room && room?.bookedRooms.length <= 0 ? (
+        0
+      ) : (
+        room?.bookedRooms.length
+      ),
       icon: <IconBuildingSkyscraper />,
       color: "#d81159",
     },
@@ -47,12 +77,18 @@ const Dashboard: React.FC = () => {
   return (
     <Layout>
       <>
-        <SimpleGrid cols={{ base: 2, md: 4, lg: 4 }} spacing={10} pb={10}>
-          {boxtype.map((a: Ibox) => (
+        <SimpleGrid
+          w={"100%"}
+          h={"fit-content"}
+          cols={{ base: 2, md: 2, lg: 4 }}
+          spacing={10}
+          pb={10}>
+          {boxtype.map((a) => (
             <Flex
-              h={"15vh"}
+              key={a.name}
               bg={"#fdfffc"}
-              p={10}
+              px={10}
+              py={20}
               gap={5}
               align={"center"}
               style={{ borderRadius: 12 }}>
@@ -61,10 +97,13 @@ const Dashboard: React.FC = () => {
                 h={"100%"}
                 direction={"column"}
                 align={"flex-start"}>
-                <Text c={"#293d40"} fz={14} fw={600}>
+                <Text
+                  c={"#293d40"}
+                  fz={{ base: 14, md: 14.2, lg: 14.5 }}
+                  fw={600}>
                   {a.name}
                 </Text>
-                <Text fz={25} c={"#172a3a"} fw={700}>
+                <Text fz={{ base: 16, md: 20, lg: 20 }} c={"#172a3a"} fw={500}>
                   {a.total}
                 </Text>
               </Flex>
@@ -74,7 +113,7 @@ const Dashboard: React.FC = () => {
             </Flex>
           ))}
         </SimpleGrid>
-        <SimpleGrid cols={{ base: 1, md: 2, lg: 2 }} spacing={10}>
+        <SimpleGrid cols={{ base: 1, md: 1, lg: 2 }} spacing={10}>
           <Flex
             w={"100%"}
             h={"65vh"}
