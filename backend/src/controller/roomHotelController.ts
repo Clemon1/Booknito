@@ -3,10 +3,13 @@ import rooms from "../model/roomModel";
 import users from "../model/usersModel";
 
 import cloudinary from "../middleware/cloudinary";
+import bookings from "../model/bookingModel";
+import { endOfDay, startOfDay } from "date-fns";
 // View all rental homes
 interface view {
   _doc: object;
 }
+
 // View all rooms
 export const viewHome = async (req: Request, res: Response) => {
   try {
@@ -41,6 +44,47 @@ export const viewSingleHome = async (req: Request, res: Response) => {
     } else {
       res.status(404).json("Room has been deleted by Admin");
     }
+  } catch (err: any) {
+    res.status(500).json(err.message);
+  }
+};
+
+export const getRoomAvailability = async (req: Request, res: Response) => {
+  try {
+    // Convert Date.now() to a JavaScript Date object and normalize it
+    const currentDate = new Date(Date.now());
+    currentDate.setHours(0, 0, 0, 0); // Normalize the current date to start of the day
+    const startofToday = startOfDay(currentDate); // Start of today (midnight)
+    const endofToday = endOfDay(currentDate);
+    // Fetch all bookings that overlap with today
+    const bookingsToday = await bookings
+      .find({
+        $or: [
+          { checkIN: { $gte: startofToday, $lte: endofToday } }, // checkIN is within today
+          { checkOUT: { $gte: startofToday, $lte: endofToday } }, // checkOUT is within today
+          { checkIN: { $lte: startofToday }, checkOUT: { $gte: endofToday } }, // spans across today
+        ],
+      })
+      .select("roomId")
+      .lean();
+
+    // Extract room IDs from bookings
+    const bookedRoomIds = bookingsToday.map((booking) => booking.roomId);
+
+    // Find all rooms that are NOT in the booked room IDs
+    const vacantRooms = await rooms.find({
+      _id: { $nin: bookedRoomIds },
+    });
+
+    const bookedRooms = await rooms.find({
+      _id: { $in: bookedRoomIds },
+    });
+
+    res.status(200).json({
+      date: startOfDay(currentDate),
+      vacantRooms,
+      bookedRooms,
+    });
   } catch (err: any) {
     res.status(500).json(err.message);
   }

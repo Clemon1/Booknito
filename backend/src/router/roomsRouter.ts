@@ -7,6 +7,7 @@ import {
   searchRoom,
   updateRoom,
   deleteRoom,
+  getRoomAvailability,
 } from "../controller/roomHotelController";
 import multer from "multer";
 
@@ -24,6 +25,7 @@ const upload = multer({
   storage,
 });
 router.get("/viewrooms", viewHome);
+router.get("/viewrooms/available", getRoomAvailability);
 router.get("/viewrooms/:id", viewSingleHome);
 
 router.get("/search", searchRoom);
