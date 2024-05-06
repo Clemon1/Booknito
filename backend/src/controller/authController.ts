@@ -48,7 +48,7 @@ export const adminRegister = async (req: Request, res: Response) => {
 export const adminLogin = async (req: Request, res: Response) => {
   try {
     if (!req.body.email || !req.body.password) {
-      return res.status(400).json("Email or Password must not be empty");
+      return res.status(401).json("Email or Password must not be empty");
     }
     const checkUser = await users.findOne({ email: req.body.email }); // checking for existing user
     if (!checkUser) {
@@ -70,7 +70,6 @@ export const adminLogin = async (req: Request, res: Response) => {
 
     const { password, ...details } = checkUser.toObject();
     const token = generateToken({ user: checkUser.id, role: checkUser.role });
-    console.log("logged in", details);
 
     res.status(200).json({ details, token });
   } catch (err: any) {

@@ -11,7 +11,7 @@ import {
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import imgLogo from "../../assets/img/page-3.png";
-import { IconCheck, IconLock, IconMail } from "@tabler/icons-react";
+import { IconCheck, IconLock, IconMail, IconX } from "@tabler/icons-react";
 import { useLoginMutation } from "../../redux/RTK_Query/authSlice";
 import { authenticate } from "../../redux/authRedux/appSLice";
 import { useNavigate } from "react-router-dom";
@@ -36,18 +36,29 @@ const Login = () => {
       navigate("/dashboard");
       notifications.show({
         title: "Logged in successfully",
-        message: `Enjoy your engagement on bookinito`,
+        message: `Welcome enjoy your engagement on bookinito`,
         icon: <IconCheck size={25} />,
-        color: "#085c60",
+        color: "#006d77",
         withCloseButton: true,
         autoClose: 4000,
         bg: "#e7fefd",
-
         radius: "lg",
       });
       console.log("Login successful");
-    } catch (err: unknown) {
-      console.log(err);
+    } catch (error: unknown) {
+      if (typeof error === "object" && error !== null && "data" in error) {
+        notifications.show({
+          title: `${error.data}`,
+          message: ``,
+          icon: <IconX size={25} />,
+          color: "#d90429",
+          withCloseButton: true,
+          autoClose: 4000,
+          bg: "#e7fefd",
+          radius: "lg",
+        });
+      }
+      console.log(error);
     }
   };
   return (
@@ -85,7 +96,7 @@ const Login = () => {
             </InputLabel>
             <TextInput
               w={"100%"}
-              fz={18}
+              fz={20}
               fw={500}
               py={8}
               leftSection={<IconMail fontSize={18} />}
@@ -102,7 +113,7 @@ const Login = () => {
             <TextInput
               w={"100%"}
               type='password'
-              fz={18}
+              fz={20}
               py={8}
               fw={500}
               leftSection={<IconLock fontSize={18} />}

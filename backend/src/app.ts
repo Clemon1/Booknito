@@ -18,6 +18,7 @@ app.use(
     extended: false,
   }),
 );
+app.use(express.static("uploads"));
 
 // Routes
 app.get("/", (req: Request, res: Response) => {

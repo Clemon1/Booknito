@@ -2,7 +2,6 @@ import { Router } from "express";
 import {
   viewHome,
   viewSingleHome,
-  viewSuggestHome,
   createRoom,
   bookmarkRentalHomes,
   searchRoom,
@@ -12,10 +11,10 @@ import {
 import multer from "multer";
 
 import path from "path";
-// import { getRecommendations } from "../controller/recommendation";
 const router = Router();
 
 const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, "./src/uploads"),
   filename: function (req, file, callback) {
     callback(null, Date.now() + path.extname(file.originalname));
   },
@@ -28,7 +27,6 @@ router.get("/viewrooms", viewHome);
 router.get("/viewrooms/:id", viewSingleHome);
 
 router.get("/search", searchRoom);
-router.get("/suggest/:userId", viewSuggestHome);
 router.post(
   "/createRoom",
   upload.fields([{ name: "photos", maxCount: 5 }]),

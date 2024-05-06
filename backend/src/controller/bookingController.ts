@@ -57,7 +57,10 @@ export const createBookings = async (req: Request, res: Response) => {
       roomId,
       $or: [
         {
-          $and: [{ checkIN: { lt: checkOUT } }, { checkOUT: { lt: checkIN } }],
+          $and: [
+            { checkIN: { $lt: checkOUT } },
+            { checkOUT: { $gt: checkIN } },
+          ],
         },
       ],
     });
@@ -81,7 +84,7 @@ export const createBookings = async (req: Request, res: Response) => {
 
     res.status(200).json(createBookingsResponse);
   } catch (err: any) {
-    console.log("Payment error: ", err.message);
+    console.log(err.message);
     return res.status(500).json(err.message);
   }
 };

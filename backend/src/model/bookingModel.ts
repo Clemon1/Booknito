@@ -1,7 +1,7 @@
-import { Schema, Types, model } from "mongoose";
+import { Schema, Types, model, Document } from "mongoose";
 
-interface IbookingService {
-  guestName: String;
+interface IbookingService extends Document {
+  guestName: string;
   roomId: Types.ObjectId;
   price: number;
   email: string;

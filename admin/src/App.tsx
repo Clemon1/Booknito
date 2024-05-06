@@ -1,47 +1,58 @@
 import "./App.css";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Dashboard from "./pages/dashboard/dashboard";
-import Reservation from "./pages/reservation";
-import Bookings from "./pages/bookings/bookings";
-import Staffs from "./pages/staff/staffs";
-import Login from "./pages/auth/login";
-import Rooms from "./pages/rooms/rooms";
-import Report from "./pages/analysis/report";
+import { lazy, Suspense } from "react";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
+import { useAppSelector } from "./redux/store";
+import { currentUser } from "./redux/authRedux/appSLice";
+const Dashboard = lazy(() => import("./pages/dashboard/dashboard"));
+const Reservation = lazy(() => import("./pages/reservation"));
+const Bookings = lazy(() => import("./pages/bookings/bookings"));
+const Staffs = lazy(() => import("./pages/staff/staffs"));
+const Login = lazy(() => import("./pages/auth/login"));
+const Rooms = lazy(() => import("./pages/rooms/rooms"));
+const Report = lazy(() => import("./pages/analysis/report"));
+const Loading = lazy(() => import("./components/loader"));
 
 function App() {
+  const user = useAppSelector(currentUser);
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Login />,
+      element: user ? <Navigate to={"/dashboard"} /> : <Login />,
     },
     {
       path: "/dashboard",
-      element: <Dashboard />,
+      element: !user ? <Navigate to={"/"} /> : <Dashboard />,
     },
     {
       path: "/reservations",
-      element: <Reservation />,
+      element: !user ? <Navigate to={"/"} /> : <Reservation />,
     },
     {
       path: "/bookings",
-      element: <Bookings />,
+      element: !user ? <Navigate to={"/"} /> : <Bookings />,
     },
     {
       path: "/rooms",
-      element: <Rooms />,
+      element: !user ? <Navigate to={"/"} /> : <Rooms />,
     },
     {
       path: "/staffs",
-      element: <Staffs />,
+      element: !user ? <Navigate to={"/"} /> : <Staffs />,
     },
     {
       path: "/reports",
-      element: <Report />,
+      element: !user ? <Navigate to={"/"} /> : <Report />,
     },
   ]);
   return (
     <>
-      <RouterProvider router={router} />
+      <Suspense fallback={<Loading />}>
+        <RouterProvider router={router} />
+      </Suspense>
     </>
   );
 }

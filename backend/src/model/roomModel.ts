@@ -1,7 +1,7 @@
 import { Schema, model, Types } from "mongoose";
 
 interface IRentalService {
-  roomNumber: number;
+  roomNumber: string;
   description: string;
   photos?: Array<string>;
   perks: Array<string>;
@@ -15,7 +15,7 @@ interface IRentalService {
 const roomSchema = new Schema<IRentalService>(
   {
     roomNumber: {
-      type: Number,
+      type: String,
       required: true,
     },
     description: {
@@ -30,11 +30,13 @@ const roomSchema = new Schema<IRentalService>(
     roomType: {
       type: String,
       enum: ["Singles", "Queens"],
+      default: "Queens",
     },
-    photos: {
-      type: String,
-    },
-
+    photos: [
+      {
+        type: String,
+      },
+    ],
     price: {
       type: Number,
       required: true,

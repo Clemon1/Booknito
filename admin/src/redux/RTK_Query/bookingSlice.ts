@@ -1,6 +1,16 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { serverURL } from "../URL";
-export interface IBooking {}
+export interface IBooking {
+  guestName: string;
+  roomId: string;
+  price: number;
+  email: string;
+  checkIN: Date;
+  checkOUT: Date;
+  numOfGuest: number;
+  adults: number;
+  children: number;
+}
 type BookingResponse = IBooking[];
 // register slice
 export const bookingApi = createApi({
@@ -9,14 +19,28 @@ export const bookingApi = createApi({
   tagTypes: ["booking"],
   endpoints: (build) => ({
     getAllBooking: build.query<BookingResponse, void>({
-      query: () => `/`,
+      query: () => `/viewBooking`,
       providesTags: ["booking"],
     }),
     singleBooking: build.query<IBooking, string>({
-      query: (id) => `/${id}`,
+      query: (id) => `/viewBooking/${id}`,
       providesTags: ["booking"],
+    }),
+    createBooking: build.mutation<IBooking, Partial<IBooking>>({
+      query(body) {
+        return {
+          url: `/createBooking`,
+          method: "POST",
+          body,
+        };
+      },
+      invalidatesTags: ["booking"],
     }),
   }),
 });
 
-export const { useGetAllBookingQuery, useSingleBookingQuery } = bookingApi;
+export const {
+  useGetAllBookingQuery,
+  useSingleBookingQuery,
+  useCreateBookingMutation,
+} = bookingApi;

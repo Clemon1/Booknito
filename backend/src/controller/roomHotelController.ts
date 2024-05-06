@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import rooms from "../model/roomModel";
 import users from "../model/usersModel";
-import { getCollaborativeFilteringRecommendations } from "../middleware/recommendAlgo";
+
 import cloudinary from "../middleware/cloudinary";
 // View all rental homes
 interface view {
@@ -17,12 +17,8 @@ export const viewHome = async (req: Request, res: Response) => {
       : (findRoom = await rooms.find({
           isDeleted: false,
           $or: [
-            { address: { $regex: search, $options: "i" } },
-            { title: { $regex: search, $options: "i" } },
-            {
-              checkIN: { $regex: search, $options: "i" },
-            },
-            { checkOut: { $regex: search, $options: "i" } },
+            { roomNumber: { $regex: search, $options: "i" } },
+            { roomType: { $regex: search, $options: "i" } },
           ],
         }));
 
@@ -31,7 +27,7 @@ export const viewHome = async (req: Request, res: Response) => {
     res.status(500).json(err.message);
   }
 };
-// View Single Rental homes
+// View Single Room
 export const viewSingleHome = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -41,7 +37,7 @@ export const viewSingleHome = async (req: Request, res: Response) => {
 
     const singleHome = await rooms.findById(id);
     if (singleHome?.isDeleted === false) {
-      res.status(200).json({ singleHome });
+      res.status(200).json(singleHome);
     } else {
       res.status(404).json("Room has been deleted by Admin");
     }
@@ -49,18 +45,8 @@ export const viewSingleHome = async (req: Request, res: Response) => {
     res.status(500).json(err.message);
   }
 };
-// Recommendation Algorithm for users based on saved Previous bookings and Bookmarked homes
-export const viewSuggestHome = async (req: Request, res: Response) => {
-  try {
-    const { userId } = req.params;
-    const recommend = getCollaborativeFilteringRecommendations(userId);
-    res.status(200).json(recommend);
-  } catch (error: any) {
-    res.status(500).json(error.message);
-  }
-};
 
-// Create rental home
+// Create Room
 export const createRoom = async (req: Request, res: Response) => {
   try {
     const { roomNumber, description, address, perks, price, maxGuest } =
@@ -87,7 +73,7 @@ export const createRoom = async (req: Request, res: Response) => {
     res.status(500).json(err.message);
   }
 };
-// Bookmark rental home
+// Bookmark room
 export const bookmarkRentalHomes = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;

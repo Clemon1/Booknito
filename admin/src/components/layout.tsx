@@ -14,16 +14,19 @@ import {
 } from "@tabler/icons-react";
 import { NavLink } from "react-router-dom";
 import AvaterMenu from "./avatarMenu";
-import { currentUser } from "../redux/authRedux/appSLice";
+import { currentUser, logOut } from "../redux/authRedux/appSLice";
+import { useAppDispatch } from "../redux/store";
 interface propType {
   children: ReactElement;
 }
 
 const Layout: React.FC<propType> = ({ children }) => {
   const [opened, { toggle }] = useDisclosure();
-
+  const dispatch = useAppDispatch();
   const user = useAppSelector(currentUser);
-
+  const handleLogout = () => {
+    dispatch(logOut());
+  };
   return (
     <AppShell
       layout='alt'
@@ -59,6 +62,7 @@ const Layout: React.FC<propType> = ({ children }) => {
               image='https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-8.png'
               name={`${user?.details?.fullname}`}
               email={`${user?.details?.email}`}
+              onclick={handleLogout}
             />
           </Flex>
         </Flex>

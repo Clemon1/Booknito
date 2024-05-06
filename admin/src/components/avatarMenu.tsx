@@ -50,10 +50,12 @@ const AvaterMenu = ({
   name,
   image,
   email,
+  onclick,
 }: {
   name: string;
   image: string;
   email: string;
+  onclick: () => void;
 }) => {
   return (
     <Box display={{ base: "none", md: "block", lg: "block" }}>
@@ -81,6 +83,7 @@ const AvaterMenu = ({
           <Menu.Divider />
 
           <Menu.Item
+            onClick={onclick}
             color='red'
             leftSection={
               <IconTrash style={{ width: rem(14), height: rem(14) }} />
