@@ -13,6 +13,21 @@ export const viewAllBookings = async (req: Request, res: Response) => {
     res.status(500).json(err.message);
   }
 };
+// total revenue for all successful bookings
+export const getTotalRevenue = async (req: Request, res: Response) => {
+  try {
+    const bookingTotal = await bookings.find({
+      status: ["active", "expired"],
+    });
+    const totalRevenue = bookingTotal.reduce(
+      (sum: any, booking: any) => sum + booking.price,
+      0,
+    );
+    res.status(200).json({ total: totalRevenue });
+  } catch (err: any) {
+    res.status(500).json(err.message);
+  }
+};
 //View user bookings
 export const viewUserBookings = async (req: Request, res: Response) => {
   try {
