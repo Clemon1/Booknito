@@ -19,7 +19,7 @@ export const ModalComp = () => {
           <Modal.Body>
             <Suspense fallback={"...Loading"}>
               <Tabs
-                color='teal'
+                color='#004346'
                 variant='pills'
                 radius='md'
                 value={activeTab}
@@ -27,10 +27,10 @@ export const ModalComp = () => {
                 onChange={setActiveTab}>
                 <Tabs.List justify='center'>
                   <Tabs.Tab value='first' fw={600}>
-                    Vacant Rooms
+                    Vacant Rooms ({rooms && rooms.vacantRooms.length})
                   </Tabs.Tab>
                   <Tabs.Tab color='#c9184a' value='second' fw={600}>
-                    Booked Rooms
+                    Booked Rooms ({rooms && rooms.bookedRooms.length})
                   </Tabs.Tab>
                 </Tabs.List>
 
@@ -38,7 +38,7 @@ export const ModalComp = () => {
                   <SimpleGrid cols={8} spacing={4}>
                     {rooms &&
                       rooms.vacantRooms.map((room) => (
-                        <Badge key={room._id} color='teal' size='xl'>
+                        <Badge key={room._id} color='#004346' size='xl'>
                           {room.roomNumber}
                         </Badge>
                       ))}

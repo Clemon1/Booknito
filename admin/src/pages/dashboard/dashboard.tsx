@@ -22,10 +22,13 @@ import {
 } from "../../redux/RTK_Query/bookingSlice";
 import { useGetVacantRoomQuery } from "../../redux/RTK_Query/roomSlice";
 import { useGetBookingReportQuery } from "../../redux/RTK_Query/reportSlice";
+
 const Dashboard: React.FC = () => {
-  const d = new Date(Date.now());
+  const d: Date = new Date(Date.now());
   const getYear = d.getFullYear().toString();
   const [year, setYear] = useState<string | null>(getYear);
+  console.log("year:", year);
+
   const { data: allBooking = [], isLoading: bookingLoad } =
     useGetAllBookingQuery();
   const { data, isLoading: revLoad } = useGetBookingRevenueQuery();
@@ -85,6 +88,12 @@ const Dashboard: React.FC = () => {
       color: "#d81159",
     },
   ];
+  // Increase the number of years
+  const years = Array.from({ length: 30 }, (_, index) =>
+    (Number(getYear) - 10 + index).toString(),
+  );
+  console.log(years);
+
   return (
     <Layout>
       <>
@@ -138,10 +147,12 @@ const Dashboard: React.FC = () => {
               </Text>
               <Select
                 radius={"lg"}
+                width={40}
                 fw={500}
+                searchable
                 value={year}
                 onChange={(e) => setYear(e)}
-                data={["2024", "2025", "2026", "2027"]}
+                data={years}
               />
             </Flex>
             <LineChartProp data={report} name='total' datakey='month' />
