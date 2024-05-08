@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { serverURL } from "../URL";
 export interface IRoom {
+  _id: string;
   roomNumber: string;
   description: string;
   photos?: Array<string>;
@@ -11,8 +12,20 @@ export interface IRoom {
 }
 export interface Ivacant {
   date: Date;
-  vacantRooms: [];
-  bookedRooms: [];
+  vacantRooms: [
+    {
+      _id: string;
+      roomNumber: string;
+      price: number;
+    },
+  ];
+  bookedRooms: [
+    {
+      _id: string;
+      roomNumber: string;
+      price: number;
+    },
+  ];
 }
 type roomResponse = IRoom[];
 // type vacantResponse = Ivacant[];
@@ -23,7 +36,7 @@ export const roomApi = createApi({
   tagTypes: ["room"],
   endpoints: (build) => ({
     getAllRoom: build.query<roomResponse, void>({
-      query: () => `/viewRooms`,
+      query: () => `/viewRooms?search`,
       providesTags: ["room"],
     }),
     getVacantRoom: build.query<Ivacant, void>({

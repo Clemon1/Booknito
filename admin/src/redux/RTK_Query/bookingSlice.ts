@@ -1,8 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { serverURL } from "../URL";
 export interface IBooking {
+  _id: string;
   guestName: string;
-  roomId: string;
+  roomId: {
+    roomNumber: string;
+  };
   price: number;
   email: string;
   checkIN: Date;

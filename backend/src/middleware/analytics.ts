@@ -9,7 +9,7 @@ interface BookingDocument extends Document {
 
 interface MontlyCount {
   month: string;
-  count: number;
+  total: number;
 }
 interface MonthlyRevenue {
   month: string;
@@ -31,14 +31,14 @@ export const getMonthlyCounts = async (model: any, year: number) => {
     try {
       const monthYear = endDate.toLocaleDateString("default", {
         month: "short",
-        year: "numeric",
+        // year: "numeric",
       });
 
-      const count = await model.countDocuments({
+      const total = await model.countDocuments({
         createdAt: { $gte: startDate, $lte: endDate },
       });
 
-      monthlyCounts.push({ month: monthYear, count });
+      monthlyCounts.push({ month: monthYear, total });
     } catch (error) {
       console.error("Error fetching monthly counts:", error);
       throw new Error("Error fetching monthly counts");

@@ -16,14 +16,18 @@ export const viewHome = async (req: Request, res: Response) => {
     const { search } = req.query;
     let findRoom;
     search === ""
-      ? (findRoom = await rooms.find({ isDeleted: false }))
-      : (findRoom = await rooms.find({
-          isDeleted: false,
-          $or: [
-            { roomNumber: { $regex: search, $options: "i" } },
-            { roomType: { $regex: search, $options: "i" } },
-          ],
-        }));
+      ? (findRoom = await rooms
+          .find({ isDeleted: false })
+          .sort({ createdAt: -1 }))
+      : (findRoom = await rooms
+          .find({
+            isDeleted: false,
+            $or: [
+              { roomNumber: { $regex: search, $options: "i" } },
+              { roomType: { $regex: search, $options: "i" } },
+            ],
+          })
+          .sort({ createdAt: -1 }));
 
     res.status(200).json(findRoom);
   } catch (err: any) {

@@ -1,6 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import Layout from "../../components/layout";
-import { Flex, Loader, SimpleGrid, Text, ThemeIcon } from "@mantine/core";
+import {
+  Flex,
+  Loader,
+  Select,
+  SimpleGrid,
+  Text,
+  ThemeIcon,
+} from "@mantine/core";
 import LineChartProp from "../../components/LineChartProp";
 import {
   IconBedFilled,
@@ -14,12 +21,16 @@ import {
   useGetBookingRevenueQuery,
 } from "../../redux/RTK_Query/bookingSlice";
 import { useGetVacantRoomQuery } from "../../redux/RTK_Query/roomSlice";
+import { useGetBookingReportQuery } from "../../redux/RTK_Query/reportSlice";
 const Dashboard: React.FC = () => {
+  const d = new Date(Date.now());
+  const getYear = d.getFullYear().toString();
+  const [year, setYear] = useState<string | null>(getYear);
   const { data: allBooking = [], isLoading: bookingLoad } =
     useGetAllBookingQuery();
   const { data, isLoading: revLoad } = useGetBookingRevenueQuery();
   const { data: room, isLoading: roomLoad } = useGetVacantRoomQuery();
-
+  const { data: report } = useGetBookingReportQuery(`${year}`);
   const boxtype = [
     {
       name: "Bookings",
@@ -37,7 +48,7 @@ const Dashboard: React.FC = () => {
       name: "Vacant Rooms",
       total: roomLoad ? (
         <Loader color='#006d77' size='md' type='dots' />
-      ) : room && room?.bookedRooms.length <= 0 ? (
+      ) : room && room?.vacantRooms.length <= 0 ? (
         0
       ) : (
         room && room?.vacantRooms.length
@@ -103,7 +114,7 @@ const Dashboard: React.FC = () => {
                   fw={600}>
                   {a.name}
                 </Text>
-                <Text fz={{ base: 16, md: 20, lg: 20 }} c={"#172a3a"} fw={500}>
+                <Text fz={{ base: 16, md: 20, lg: 21 }} c={"#172a3a"} fw={600}>
                   {a.total}
                 </Text>
               </Flex>
@@ -113,24 +124,31 @@ const Dashboard: React.FC = () => {
             </Flex>
           ))}
         </SimpleGrid>
-        <SimpleGrid cols={{ base: 1, md: 1, lg: 2 }} spacing={10}>
+        <SimpleGrid w={"100%"} cols={{ base: 1, md: 1, lg: 2 }} spacing={10}>
           <Flex
             w={"100%"}
-            h={"65vh"}
+            h={"67vh"}
             bg={"#fdfffc"}
             direction={"column"}
             p={10}
             style={{ borderRadius: 12 }}>
-            <Flex w={"100%"} pb={5}>
+            <Flex w={"100%"} pb={5} justify={"space-between"} align={"center"}>
               <Text c={"#172a3a"} fw={600}>
                 Booking Analysis
               </Text>
+              <Select
+                radius={"lg"}
+                fw={500}
+                value={year}
+                onChange={(e) => setYear(e)}
+                data={["2024", "2025", "2026", "2027"]}
+              />
             </Flex>
-            <LineChartProp />
+            <LineChartProp data={report} name='total' datakey='month' />
           </Flex>
           <Flex
             w={"100%"}
-            h={"65vh"}
+            h={"67vh"}
             bg={"#fdfffc"}
             direction={"column"}
             p={10}

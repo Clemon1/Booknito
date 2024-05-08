@@ -1,37 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { AreaChart, getFilteredChartTooltipPayload } from "@mantine/charts";
 import { Paper, Text } from "@mantine/core";
-const LineChartProp = () => {
-  const data = [
-    {
-      date: "Jan 22",
-      Bookings: 890,
-    },
-    {
-      date: "Jan 22",
-      Bookings: 1090,
-    },
-    {
-      date: "Mar 22",
-      Bookings: 2890,
-    },
-    {
-      date: "Mar 23",
-      Bookings: 2756,
-    },
-    {
-      date: "Mar 24",
-      Bookings: 3322,
-    },
-    {
-      date: "Mar 25",
-      Bookings: 3470,
-    },
-    {
-      date: "Mar 26",
-      Bookings: 3129,
-    },
-  ];
+
+const LineChartProp = ({
+  data,
+  name,
+  datakey,
+}: {
+  data: any;
+  name: string;
+  datakey: string;
+}) => {
   interface ChartTooltipProps {
     label: string;
     payload: Record<string, any>[] | undefined;
@@ -54,22 +33,25 @@ const LineChartProp = () => {
     );
   }
   return (
-    <AreaChart
-      w={"100%"}
-      h={"90%"}
-      data={data}
-      withTooltip={true}
-      withLegend={true}
-      dataKey='date'
-      tooltipProps={{
-        content: ({ label, payload }) => (
-          <ChartTooltip label={label} payload={payload} />
-        ),
-      }}
-      series={[{ name: "Bookings", color: "rgb(9, 188, 138)" }]}
-      curveType='natural'
-      fillOpacity={0.39}
-    />
+    <>
+      <AreaChart
+        w={"100%"}
+        h={"90%"}
+        data={data}
+        translate='yes'
+        withTooltip={true}
+        dataKey={datakey}
+        tooltipProps={{
+          content: ({ label, payload }) => (
+            <ChartTooltip label={label} payload={payload} />
+          ),
+        }}
+        series={[{ name: name, color: "rgb(9, 188, 138)" }]}
+        curveType='monotone'
+        tooltipAnimationDuration={600}
+        fillOpacity={0.39}
+      />
+    </>
   );
 };
 

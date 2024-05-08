@@ -7,7 +7,12 @@ dotenv.config();
 // View all bookings
 export const viewAllBookings = async (req: Request, res: Response) => {
   try {
-    const allBookings = await bookings.find();
+    const allBookings = await bookings
+      .find()
+      .populate("roomId")
+      .sort({ createdAt: -1 })
+      .exec();
+
     res.status(200).json(allBookings);
   } catch (err: any) {
     res.status(500).json(err.message);

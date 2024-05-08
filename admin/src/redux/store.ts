@@ -4,6 +4,7 @@ import { authApi } from "./RTK_Query/authSlice";
 import { bookingApi } from "./RTK_Query/bookingSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { roomApi } from "./RTK_Query/roomSlice";
+import { reportApi } from "./RTK_Query/reportSlice";
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
     [authApi.reducerPath]: authApi.reducer,
     [roomApi.reducerPath]: roomApi.reducer,
     [bookingApi.reducerPath]: bookingApi.reducer,
+    [reportApi.reducerPath]: reportApi.reducer,
   },
 
   middleware: (getDefaultMiddleware) =>
@@ -18,6 +20,7 @@ export const store = configureStore({
       authApi.middleware,
       roomApi.middleware,
       bookingApi.middleware,
+      reportApi.middleware,
     ]),
 });
 
