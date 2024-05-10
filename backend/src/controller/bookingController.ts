@@ -25,7 +25,7 @@ export const getTotalRevenue = async (req: Request, res: Response) => {
       status: ["active", "expired"],
     });
     const totalRevenue = bookingTotal.reduce(
-      (sum: any, booking: any) => sum + booking.price,
+      (sum: any, booking: any) => sum + booking.totalAmount,
       0,
     );
     res.status(200).json({ total: totalRevenue });
@@ -61,8 +61,17 @@ export const viewSingleBooking = async (req: Request, res: Response) => {
 // Create a new Booking
 export const createBookings = async (req: Request, res: Response) => {
   try {
-    const { guestName, roomId, price, checkIN, checkOUT, numOfGuest, email } =
-      req.body;
+    const {
+      guestName,
+      roomId,
+      price,
+      checkIN,
+      discountAmount,
+      refundAmount,
+      checkOUT,
+      numOfGuest,
+      email,
+    } = req.body;
     if (
       !guestName ||
       !roomId ||
@@ -91,24 +100,57 @@ export const createBookings = async (req: Request, res: Response) => {
           "Sorry, the room is already booked for the specified time range.",
         );
     }
+    // const totalPrice = price - discountAmount - refundAmount;
+    // console.log(totalPrice);
+
     const setBooking = new bookings({
       guestName,
       roomId,
       price,
       email,
+      discountAmount,
+      refundAmount,
       checkIN,
       checkOUT,
       numOfGuest,
     });
     const createBookingsResponse = await setBooking.save();
 
-    res.status(200).json(createBookingsResponse);
+    res.status(201).json(createBookingsResponse);
   } catch (err: any) {
     console.log(err.message);
     return res.status(500).json(err.message);
   }
 };
 
+export const updateBookings = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { price, discountAmount, refundAmount, checkOUT } = req.body;
+
+    const totalPrice = price - discountAmount - refundAmount;
+    const body = {
+      price,
+      discountAmount,
+      refundAmount,
+      checkOUT,
+      totalAmount: totalPrice,
+    };
+    console.log("totalPrice", totalPrice);
+
+    const updatedBooking = await bookings.findByIdAndUpdate(
+      id,
+      {
+        $set: body,
+      },
+      { new: true },
+    );
+
+    res.status(200).json(updatedBooking);
+  } catch (err: any) {
+    res.status(500).json(err.message);
+  }
+};
 // Update & Cancel booking
 export const cancelBookings = async (req: Request, res: Response) => {
   try {

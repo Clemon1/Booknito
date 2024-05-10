@@ -62,7 +62,7 @@ export const ModalComp = () => {
       </Modal.Root>
 
       <Button radius={"md"} onClick={open}>
-        Room Availability
+        Availability
       </Button>
     </>
   );

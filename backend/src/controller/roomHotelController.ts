@@ -112,6 +112,7 @@ export const createRoom = async (req: Request, res: Response) => {
       photos: photo,
       perks,
       price,
+
       maxGuest,
     });
 

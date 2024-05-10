@@ -5,8 +5,11 @@ interface IbookingService extends Document {
   roomId: Types.ObjectId;
   price: number;
   email: string;
+  discountAmount: number;
+  refundAmount: number;
   checkIN: Date;
   checkOUT: Date;
+  totalAmount: number;
   numOfGuest: number;
   adults: number;
   children: number;
@@ -31,6 +34,18 @@ const bookingSchema = new Schema<IbookingService>(
     price: {
       type: Number,
       required: true,
+    },
+    discountAmount: {
+      type: Number,
+      default: 0,
+    },
+    refundAmount: {
+      type: Number,
+      default: 0,
+    },
+    totalAmount: {
+      type: Number,
+      default: 0,
     },
     checkIN: {
       type: Date,
@@ -62,6 +77,10 @@ const bookingSchema = new Schema<IbookingService>(
     timestamps: true,
   },
 );
-
+//Calculate the main total
+bookingSchema.pre<IbookingService>("save", function (next) {
+  this.totalAmount = this.price - this.discountAmount - this.refundAmount;
+  next();
+});
 const bookings = model("bookings", bookingSchema);
 export default bookings;

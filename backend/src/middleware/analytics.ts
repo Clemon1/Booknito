@@ -1,6 +1,13 @@
 import { Model, Document } from "mongoose";
-import { startOfMonth, endOfMonth, subMonths, addMonths } from "date-fns";
-
+import {
+  startOfMonth,
+  endOfMonth,
+  subMonths,
+  addMonths,
+  subWeeks,
+  isWithinInterval,
+  startOfWeek,
+} from "date-fns";
 interface BookingDocument extends Document {
   price: number;
   checkIN: Date;
@@ -76,7 +83,7 @@ export const getMonthlyRevenue = async (
         {
           $group: {
             _id: null,
-            total: { $sum: "$price" },
+            total: { $sum: "$totalAmount" },
           },
         },
       ]);
@@ -100,4 +107,15 @@ export const getMonthlyRevenue = async (
   }
 
   return monthlyRevenue;
+};
+
+// Function to filter bookings within the last week or month and count them
+const getBookingCounts = (bookings: any, startDate: any) => {
+  return bookings.reduce((acc: any, booking: any) => {
+    const bookingDate = new Date(booking.checkIN);
+    if (isWithinInterval(bookingDate, { start: startDate, end: new Date() })) {
+      acc[booking.roomId] = (acc[booking.roomId] || 0) + 1;
+    }
+    return acc;
+  }, {});
 };
