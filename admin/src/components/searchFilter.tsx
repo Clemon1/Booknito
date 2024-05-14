@@ -1,17 +1,20 @@
 import React, { ReactElement } from "react";
 import { Button, Flex, TextInput } from "@mantine/core";
+import { Link } from "react-router-dom";
 
 interface ISearchProps {
   PlaceHolder: string;
   BtnName: string;
   IconName: ReactElement;
   children: ReactElement;
+  link: string;
 }
 const SearchFilter: React.FC<ISearchProps> = ({
   PlaceHolder,
   IconName,
   BtnName,
   children,
+  link,
 }) => {
   return (
     <Flex
@@ -39,8 +42,9 @@ const SearchFilter: React.FC<ISearchProps> = ({
         />
         <Button radius={"0px 10px 10px 0px"}>{IconName}</Button>
       </Flex>
-
-      <Button radius={"md"}>{BtnName}</Button>
+      <Link to={link}>
+        <Button radius={"md"}>{BtnName}</Button>
+      </Link>
     </Flex>
   );
 };

@@ -1,4 +1,4 @@
-import { Flex, Pagination, Table } from "@mantine/core";
+import { Button, Flex, Pagination, Table } from "@mantine/core";
 import Layout from "../../components/layout";
 import { useState } from "react";
 import { IconSearch } from "@tabler/icons-react";
@@ -28,6 +28,7 @@ const Bookings = () => {
         <SearchFilter
           PlaceHolder='Search Booking ID, Name or RoomNo'
           IconName={<IconSearch fontSize={18} />}
+          link='/newbooking'
           BtnName='New Bookings'>
           <></>
         </SearchFilter>
@@ -39,28 +40,38 @@ const Bookings = () => {
           <Table striped stripedColor='#ffffff'>
             <Table.Thead>
               <Table.Tr>
-                <Table.Th>Booking ID</Table.Th>
-                <Table.Th>Name</Table.Th>
+                <Table.Th>Customer Name</Table.Th>
                 <Table.Th>Room NO</Table.Th>
                 <Table.Th>Price(NGN)</Table.Th>
+                <Table.Th>Discount(NGN)</Table.Th>
+                <Table.Th>Refund(NGN)</Table.Th>
+                <Table.Th>Balance(NGN)</Table.Th>
                 <Table.Th>Check-In</Table.Th>
                 <Table.Th>Check-Out</Table.Th>
+                <Table.Th>Action</Table.Th>
               </Table.Tr>
             </Table.Thead>
             <Table.Tbody>
               {booking.map((item) => (
                 <Table.Tr key={item._id}>
-                  <Table.Td> {item._id}</Table.Td>
                   <Table.Td>{item.guestName}</Table.Td>
                   <Table.Td>
                     {item && item.roomId && item.roomId.roomNumber}
                   </Table.Td>
                   <Table.Td>{item.price}</Table.Td>
+                  <Table.Td>{item.discountAmount}</Table.Td>
+                  <Table.Td>{item.refundAmount}</Table.Td>
+                  <Table.Td>{item.totalAmount}</Table.Td>
                   <Table.Td>
                     {format(new Date(item.checkIN), "yyyy-MM-dd")}
                   </Table.Td>
                   <Table.Td>
                     {format(new Date(item.checkOUT), "yyyy-MM-dd")}
+                  </Table.Td>
+                  <Table.Td>
+                    <Button radius={"md"} bg={"#1a7a7e"}>
+                      E
+                    </Button>
                   </Table.Td>
                 </Table.Tr>
               ))}

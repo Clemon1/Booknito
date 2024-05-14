@@ -7,6 +7,9 @@ export interface IBooking {
     roomNumber: string;
   };
   price: number;
+  discountAmount: number;
+  refundAmount: number;
+  totalAmount: number;
   email: string;
   checkIN: Date;
   checkOUT: Date;

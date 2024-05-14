@@ -10,6 +10,8 @@ import { currentUser } from "./redux/authRedux/appSLice";
 const Dashboard = lazy(() => import("./pages/dashboard/dashboard"));
 const Reservation = lazy(() => import("./pages/reservation"));
 const Bookings = lazy(() => import("./pages/bookings/bookings"));
+const CreateBooking = lazy(() => import("./pages/bookings/createBooking"));
+
 const Staffs = lazy(() => import("./pages/staff/staffs"));
 const Login = lazy(() => import("./pages/auth/login"));
 const Rooms = lazy(() => import("./pages/rooms/rooms"));
@@ -34,6 +36,10 @@ function App() {
     {
       path: "/bookings",
       element: !user ? <Navigate to={"/"} /> : <Bookings />,
+    },
+    {
+      path: "/newbooking",
+      element: !user ? <Navigate to={"/"} /> : <CreateBooking />,
     },
     {
       path: "/rooms",

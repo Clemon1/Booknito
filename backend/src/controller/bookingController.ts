@@ -1,6 +1,7 @@
 import * as dotenv from "dotenv";
 import { Request, Response } from "express";
 import bookings from "../model/bookingModel";
+import rooms from "../model/roomModel";
 
 dotenv.config();
 
@@ -72,16 +73,10 @@ export const createBookings = async (req: Request, res: Response) => {
       numOfGuest,
       email,
     } = req.body;
-    if (
-      !guestName ||
-      !roomId ||
-      !price ||
-      !checkIN ||
-      !checkOUT ||
-      !numOfGuest
-    ) {
+    if (!guestName || !roomId || !checkIN || !checkOUT || !numOfGuest) {
       return res.status(401).json("Details must not be empty");
     }
+
     const existingBooking = await bookings.findOne({
       roomId,
       $or: [
@@ -100,13 +95,15 @@ export const createBookings = async (req: Request, res: Response) => {
           "Sorry, the room is already booked for the specified time range.",
         );
     }
-    // const totalPrice = price - discountAmount - refundAmount;
-    // console.log(totalPrice);
 
+    const findRoom = await rooms.findById(roomId);
+    if (!findRoom) {
+      return res.status(401).json("Room not found");
+    }
     const setBooking = new bookings({
       guestName,
       roomId,
-      price,
+      price: findRoom?.price,
       email,
       discountAmount,
       refundAmount,
@@ -133,7 +130,7 @@ export const updateBookings = async (req: Request, res: Response) => {
       price,
       discountAmount,
       refundAmount,
-      checkOUT,
+      checkOUT: new Date(),
       totalAmount: totalPrice,
     };
     console.log("totalPrice", totalPrice);

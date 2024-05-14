@@ -176,17 +176,23 @@ const Layout: React.FC<propType> = ({ children }) => {
               Staffs
             </List.Item>
           </NavLink>
-          <List.Item
-            w={"100%"}
-            h={38}
-            style={{
-              display: "flex",
-              paddingLeft: "3rem",
-              gap: 1,
-            }}
-            icon={<IconReport style={{ fontSize: 24 }} />}>
-            Reports
-          </List.Item>
+          <NavLink
+            to={"/reports"}
+            className={({ isActive }) =>
+              isActive ? "nav-link-active" : "nav-link"
+            }>
+            <List.Item
+              w={"100%"}
+              h={38}
+              style={{
+                display: "flex",
+                paddingLeft: "3rem",
+                gap: 1,
+              }}
+              icon={<IconReport style={{ fontSize: 24 }} />}>
+              Reports
+            </List.Item>
+          </NavLink>
           <List.Item
             w={"100%"}
             h={38}
