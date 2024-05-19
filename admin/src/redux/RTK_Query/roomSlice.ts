@@ -43,7 +43,7 @@ export const roomApi = createApi({
       query: () => `/viewRooms/available`,
       providesTags: ["room"],
     }),
-    singleRoom: build.query<IRoom, string>({
+    singleRoom: build.query<IRoom, string | null>({
       query: (id) => `/viewRooms/${id}`,
       providesTags: ["room"],
     }),

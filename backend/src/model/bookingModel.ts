@@ -2,6 +2,12 @@ import { Schema, Types, model, Document } from "mongoose";
 
 interface IbookingService extends Document {
   guestName: string;
+  gender: string;
+  address: string;
+  occupation: string;
+  phoneNumber: string;
+  nationality: string;
+  passportNumber: string;
   roomId: Types.ObjectId;
   price: number;
   email: string;
@@ -22,6 +28,16 @@ const bookingSchema = new Schema<IbookingService>(
       type: String,
       required: true,
     },
+    gender: {
+      type: String,
+      enum: ["Male", "Female", "Others"],
+      required: true,
+    },
+    address: String,
+    occupation: String,
+    phoneNumber: String,
+    nationality: String,
+    passportNumber: String,
     roomId: {
       type: Schema.Types.ObjectId,
       ref: "rooms",

@@ -3,6 +3,13 @@ import { serverURL } from "../URL";
 export interface IBooking {
   _id: string;
   guestName: string;
+  gender: string;
+  address: string;
+  occupation: string;
+  email: string;
+  phoneNumber: string;
+  nationality: string;
+  passportNumber: string;
   roomId: {
     roomNumber: string;
   };
@@ -10,9 +17,29 @@ export interface IBooking {
   discountAmount: number;
   refundAmount: number;
   totalAmount: number;
+  checkIN: Date | null;
+  checkOUT: Date | null;
+  numOfGuest: number;
+  adults: number;
+  children: number;
+}
+export interface IBooking2 {
+  _id: string;
+  guestName: string;
+  gender: string | null;
+  address: string;
+  occupation: string;
   email: string;
-  checkIN: Date;
-  checkOUT: Date;
+  phoneNumber: string;
+  nationality: string;
+  passportNumber: string;
+  roomId: string | null;
+  price: number;
+  discountAmount: number;
+  refundAmount: number;
+  totalAmount: number;
+  checkIN: Date | null;
+  checkOUT: Date | null;
   numOfGuest: number;
   adults: number;
   children: number;
@@ -39,7 +66,7 @@ export const bookingApi = createApi({
       query: (id) => `/viewBooking/${id}`,
       providesTags: ["booking"],
     }),
-    createBooking: build.mutation<IBooking, Partial<IBooking>>({
+    createBooking: build.mutation<IBooking2, Partial<IBooking2>>({
       query(body) {
         return {
           url: `/createBooking`,

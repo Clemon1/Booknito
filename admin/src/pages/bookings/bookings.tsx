@@ -17,7 +17,7 @@ const Bookings = () => {
     return [head, ...chunk(tail, size)];
   }
 
-  const items = chunk(data, 10);
+  const items = chunk(data, 8);
   const [activePage, setPage] = useState<number>(1);
   console.log(items);
   const booking = items[activePage - 1] || [];
@@ -63,10 +63,14 @@ const Bookings = () => {
                   <Table.Td>{item.refundAmount}</Table.Td>
                   <Table.Td>{item.totalAmount}</Table.Td>
                   <Table.Td>
-                    {format(new Date(item.checkIN), "yyyy-MM-dd")}
+                    {item.checkIN
+                      ? format(new Date(item.checkIN), "yyyy-MM-dd")
+                      : "-"}
                   </Table.Td>
                   <Table.Td>
-                    {format(new Date(item.checkOUT), "yyyy-MM-dd")}
+                    {item.checkOUT
+                      ? format(new Date(item.checkOUT), "yyyy-MM-dd")
+                      : "-"}
                   </Table.Td>
                   <Table.Td>
                     <Button radius={"md"} bg={"#1a7a7e"}>

@@ -64,8 +64,15 @@ export const createBookings = async (req: Request, res: Response) => {
   try {
     const {
       guestName,
+      gender,
+      address,
+      occupation,
+      phoneNumber,
+      nationality,
+      passportNumber,
+      adults,
+      children,
       roomId,
-      price,
       checkIN,
       discountAmount,
       refundAmount,
@@ -73,7 +80,19 @@ export const createBookings = async (req: Request, res: Response) => {
       numOfGuest,
       email,
     } = req.body;
-    if (!guestName || !roomId || !checkIN || !checkOUT || !numOfGuest) {
+    if (
+      !guestName ||
+      !gender ||
+      !address ||
+      !occupation ||
+      !phoneNumber ||
+      !nationality ||
+      !passportNumber ||
+      !roomId ||
+      !checkIN ||
+      !checkOUT ||
+      !numOfGuest
+    ) {
       return res.status(401).json("Details must not be empty");
     }
 
@@ -102,6 +121,12 @@ export const createBookings = async (req: Request, res: Response) => {
     }
     const setBooking = new bookings({
       guestName,
+      gender,
+      address,
+      occupation,
+      phoneNumber,
+      nationality,
+      passportNumber,
       roomId,
       price: findRoom?.price,
       email,
@@ -110,6 +135,8 @@ export const createBookings = async (req: Request, res: Response) => {
       checkIN,
       checkOUT,
       numOfGuest,
+      adults,
+      children,
     });
     const createBookingsResponse = await setBooking.save();
 
