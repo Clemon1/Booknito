@@ -4,9 +4,9 @@ export interface IRoom {
   _id: string;
   roomNumber: string;
   description: string;
-  photos?: Array<string>;
+  photos?: File[];
   perks?: Array<string>;
-  roomType: string;
+  roomType: string | null;
   price: number;
   maxGuest: number;
 }
@@ -47,7 +47,7 @@ export const roomApi = createApi({
       query: (id) => `/viewRooms/${id}`,
       providesTags: ["room"],
     }),
-    createRoom: build.mutation<IRoom, Partial<IRoom>>({
+    createRoom: build.mutation<IRoom, FormData>({
       query(body) {
         return {
           url: `/createRoom`,

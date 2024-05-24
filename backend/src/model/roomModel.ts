@@ -29,8 +29,16 @@ const roomSchema = new Schema<IRentalService>(
     ],
     roomType: {
       type: String,
-      enum: ["Singles", "Queens"],
-      default: "Queens",
+      enum: [
+        "Standard Room",
+        "Deluxe Room",
+        "Executive Room",
+        "Junior Suite",
+        "Suite",
+        "Presidential Suite",
+        "Penthouse Suite",
+      ],
+      default: "Standard Room",
     },
     photos: [
       {

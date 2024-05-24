@@ -97,19 +97,30 @@ export const getRoomAvailability = async (req: Request, res: Response) => {
 // Create Room
 export const createRoom = async (req: Request, res: Response) => {
   try {
-    const { roomNumber, description, address, perks, price, maxGuest } =
+    const { roomNumber, roomType, description, perks, price, maxGuest } =
       req.body;
-
+    if (
+      !roomNumber ||
+      !roomType ||
+      !description ||
+      !perks ||
+      !price ||
+      !maxGuest
+    ) {
+      return res.status(401).json("Fields must be not be empty ");
+    }
     //@ts-ignore
     const photo: [string] =
       //@ts-ignore
       req.files["photos"] && req.files["photos"].map((file: any) => file.path);
 
+    console.log(req.body);
+
     const rntHome = new rooms({
       roomNumber,
       description,
-      address,
       photos: photo,
+      roomType,
       perks,
       price,
       maxGuest,

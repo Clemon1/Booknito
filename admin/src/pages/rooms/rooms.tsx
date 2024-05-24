@@ -119,6 +119,7 @@ const Rooms = () => {
         <SearchFilter
           PlaceHolder='Search RoomNo or Filter By Type'
           IconName={<IconSearch fontSize={18} />}
+          link='/newroom'
           BtnName='New Room'>
           <>
             <ModalComp />

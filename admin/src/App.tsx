@@ -10,11 +10,13 @@ import { currentUser } from "./redux/authRedux/appSLice";
 const Dashboard = lazy(() => import("./pages/dashboard/dashboard"));
 const Reservation = lazy(() => import("./pages/reservation"));
 const Bookings = lazy(() => import("./pages/bookings/bookings"));
+const BookingDetails = lazy(() => import("./pages/bookings/bookingDetails"));
 const CreateBooking = lazy(() => import("./pages/bookings/createBooking"));
-
 const Staffs = lazy(() => import("./pages/staff/staffs"));
 const Login = lazy(() => import("./pages/auth/login"));
 const Rooms = lazy(() => import("./pages/rooms/rooms"));
+const RoomDetails = lazy(() => import("./pages/rooms/roomDetails"));
+const CreateRoom = lazy(() => import("./pages/rooms/createRoom"));
 const Report = lazy(() => import("./pages/analysis/report"));
 const Loading = lazy(() => import("./components/loader"));
 
@@ -38,12 +40,24 @@ function App() {
       element: !user ? <Navigate to={"/"} /> : <Bookings />,
     },
     {
+      path: "/bookings/:id",
+      element: !user ? <Navigate to={"/"} /> : <BookingDetails />,
+    },
+    {
       path: "/newbooking",
       element: !user ? <Navigate to={"/"} /> : <CreateBooking />,
     },
     {
       path: "/rooms",
       element: !user ? <Navigate to={"/"} /> : <Rooms />,
+    },
+    {
+      path: "/rooms/:id",
+      element: !user ? <Navigate to={"/"} /> : <RoomDetails />,
+    },
+    {
+      path: "/newroom",
+      element: !user ? <Navigate to={"/"} /> : <CreateRoom />,
     },
     {
       path: "/staffs",

@@ -1,7 +1,7 @@
 import { Button, Flex, Pagination, Table } from "@mantine/core";
 import Layout from "../../components/layout";
 import { useState } from "react";
-import { IconSearch } from "@tabler/icons-react";
+import { IconFileDescription, IconSearch } from "@tabler/icons-react";
 import SearchFilter from "../../components/searchFilter";
 import { useGetAllBookingQuery } from "../../redux/RTK_Query/bookingSlice";
 import { format } from "date-fns";
@@ -73,8 +73,8 @@ const Bookings = () => {
                       : "-"}
                   </Table.Td>
                   <Table.Td>
-                    <Button radius={"md"} bg={"#1a7a7e"}>
-                      E
+                    <Button radius={"md"} p={6} bg={"#1a7a7e"}>
+                      <IconFileDescription size={24} />
                     </Button>
                   </Table.Td>
                 </Table.Tr>
