@@ -10,12 +10,31 @@ export interface ILogin {
   email: string;
   password: string;
 }
+
+export interface IAllUsers {
+  _id: string;
+  fullname: string;
+  email: string;
+  role: string;
+}
+type AllUserResponse = IAllUsers[];
+
 // register slice
 export const authApi = createApi({
   reducerPath: "authAPi",
   baseQuery: fetchBaseQuery({ baseUrl: `${serverURL}/auth` }),
   tagTypes: ["auth"],
   endpoints: (build) => ({
+    //Get all users
+    getAllUsers: build.query<AllUserResponse, void>({
+      query: (role) => `/admin/allUsers?role=${role}`,
+      providesTags: ["auth"],
+    }),
+    //Get a single user
+    getSingleUser: build.query<IAllUsers, string>({
+      query: (id) => `/admin/allUser/${id}`,
+      providesTags: ["auth"],
+    }),
     // Register Endpoints
     register: build.mutation<IRegister, Partial<IRegister>>({
       query(body) {
@@ -42,4 +61,9 @@ export const authApi = createApi({
   }),
 });
 
-export const { useRegisterMutation, useLoginMutation } = authApi;
+export const {
+  useGetAllUsersQuery,
+  useGetSingleUserQuery,
+  useRegisterMutation,
+  useLoginMutation,
+} = authApi;

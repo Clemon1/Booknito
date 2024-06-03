@@ -4,13 +4,13 @@ import { AppShell, Burger, Flex, Text, List } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
   IconCategory,
-  IconCalendarFilled,
   IconAnalyzeFilled,
   IconBedFilled,
   IconVersionsFilled,
   IconUsersGroup,
   IconReport,
   IconSettingsFilled,
+  IconCoins,
 } from "@tabler/icons-react";
 import { NavLink } from "react-router-dom";
 import AvaterMenu from "./avatarMenu";
@@ -108,23 +108,7 @@ const Layout: React.FC<propType> = ({ children }) => {
               Dashboard
             </List.Item>
           </NavLink>
-          <NavLink
-            to={"/reservations"}
-            className={({ isActive }) =>
-              isActive ? "nav-link-active" : "nav-link"
-            }>
-            <List.Item
-              w={"100%"}
-              h={38}
-              style={{
-                display: "flex",
-                paddingLeft: "3rem",
-                gap: 1,
-              }}
-              icon={<IconCalendarFilled style={{ fontSize: 24 }} />}>
-              Reservation
-            </List.Item>
-          </NavLink>
+
           <NavLink
             to={"/bookings"}
             className={({ isActive }) =>
@@ -174,6 +158,23 @@ const Layout: React.FC<propType> = ({ children }) => {
               }}
               icon={<IconUsersGroup style={{ fontSize: 24 }} />}>
               Staffs
+            </List.Item>
+          </NavLink>
+          <NavLink
+            to={"/expenses"}
+            className={({ isActive }) =>
+              isActive ? "nav-link-active" : "nav-link"
+            }>
+            <List.Item
+              w={"100%"}
+              h={38}
+              style={{
+                display: "flex",
+                paddingLeft: "3rem",
+                gap: 1,
+              }}
+              icon={<IconCoins style={{ fontSize: 24 }} />}>
+              Expenses
             </List.Item>
           </NavLink>
           <NavLink

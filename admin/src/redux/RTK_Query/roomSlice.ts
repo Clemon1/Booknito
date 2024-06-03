@@ -35,8 +35,8 @@ export const roomApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: `${serverURL}/v1/rooms` }),
   tagTypes: ["room"],
   endpoints: (build) => ({
-    getAllRoom: build.query<roomResponse, void>({
-      query: () => `/viewRooms?search`,
+    getAllRoom: build.query<roomResponse, string>({
+      query: (search) => `/viewRooms?search=${search}`,
       providesTags: ["room"],
     }),
     getVacantRoom: build.query<Ivacant, void>({

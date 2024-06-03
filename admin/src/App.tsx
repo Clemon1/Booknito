@@ -8,7 +8,7 @@ import {
 import { useAppSelector } from "./redux/store";
 import { currentUser } from "./redux/authRedux/appSLice";
 const Dashboard = lazy(() => import("./pages/dashboard/dashboard"));
-const Reservation = lazy(() => import("./pages/reservation"));
+const Expenses = lazy(() => import("./pages/expenses/expenses"));
 const Bookings = lazy(() => import("./pages/bookings/bookings"));
 const BookingDetails = lazy(() => import("./pages/bookings/bookingDetails"));
 const CreateBooking = lazy(() => import("./pages/bookings/createBooking"));
@@ -32,8 +32,8 @@ function App() {
       element: !user ? <Navigate to={"/"} /> : <Dashboard />,
     },
     {
-      path: "/reservations",
-      element: !user ? <Navigate to={"/"} /> : <Reservation />,
+      path: "/expenses",
+      element: !user ? <Navigate to={"/"} /> : <Expenses />,
     },
     {
       path: "/bookings",

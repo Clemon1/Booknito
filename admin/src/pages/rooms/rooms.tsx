@@ -22,9 +22,11 @@ import {
   useGetVacantRoomQuery,
 } from "../../redux/RTK_Query/roomSlice";
 import { ModalComp } from "../../components/modal";
+
 const Rooms = () => {
+  const [search, setSearch] = useState<string>("");
   const { data: available, isLoading: roomLoad } = useGetVacantRoomQuery();
-  const { data: rooms = [], isLoading } = useGetAllRoomQuery();
+  const { data: rooms = [], isLoading } = useGetAllRoomQuery(search);
   function chunk<T>(array: T[], size: number): T[][] {
     if (!array.length) {
       return [];
@@ -43,7 +45,7 @@ const Rooms = () => {
       name: "Vacant Rooms",
       total: roomLoad ? (
         <Loader color='#006d77' size='md' type='dots' />
-      ) : available && available?.bookedRooms.length <= 0 ? (
+      ) : available && available?.vacantRooms.length <= 0 ? (
         0
       ) : (
         available && available?.vacantRooms.length
@@ -120,6 +122,7 @@ const Rooms = () => {
           PlaceHolder='Search RoomNo or Filter By Type'
           IconName={<IconSearch fontSize={18} />}
           link='/newroom'
+          onchange={(e) => setSearch(e.target.value)}
           BtnName='New Room'>
           <>
             <ModalComp />
@@ -141,24 +144,34 @@ const Rooms = () => {
               </Table.Tr>
             </Table.Thead>
             <Table.Tbody>
-              {getRooms.map((room) => (
-                <Table.Tr key={room._id}>
-                  <Table.Td>{room.roomNumber}</Table.Td>
-                  <Table.Td>{room.roomType}</Table.Td>
-                  <Table.Td>{room.price}</Table.Td>
-                  <Table.Td>{room.maxGuest}</Table.Td>
-                  <Table.Td>
-                    <Flex gap={10}>
-                      <Button bg={"cyan"} radius={"lg"}>
-                        <IconEdit size={20} />
-                      </Button>
-                      <Button bg={"red"} radius={"lg"}>
-                        <IconTrashFilled size={20} />
-                      </Button>
-                    </Flex>
-                  </Table.Td>
-                </Table.Tr>
-              ))}
+              {getRooms.length <= 0 ? (
+                <>
+                  <Flex w={"100%"} justify={"center"} pos={"relative"}>
+                    <Text fw={400} fz={23} ta={"center"}>
+                      No data
+                    </Text>
+                  </Flex>
+                </>
+              ) : (
+                getRooms.map((room) => (
+                  <Table.Tr key={room._id}>
+                    <Table.Td>{room.roomNumber}</Table.Td>
+                    <Table.Td>{room.roomType}</Table.Td>
+                    <Table.Td>{room.price}</Table.Td>
+                    <Table.Td>{room.maxGuest}</Table.Td>
+                    <Table.Td>
+                      <Flex gap={10}>
+                        <Button bg={"cyan"} radius={"lg"}>
+                          <IconEdit size={20} />
+                        </Button>
+                        <Button bg={"red"} radius={"lg"}>
+                          <IconTrashFilled size={20} />
+                        </Button>
+                      </Flex>
+                    </Table.Td>
+                  </Table.Tr>
+                ))
+              )}
             </Table.Tbody>
           </Table>
 

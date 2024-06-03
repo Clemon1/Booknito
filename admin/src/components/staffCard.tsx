@@ -1,6 +1,16 @@
 import { Avatar, Badge, Card, Flex, Text } from "@mantine/core";
 
-const StaffCard = ({ fullname, role }: { fullname: string; role: string }) => {
+const StaffCard = ({
+  profile,
+  fullname,
+  email,
+  role,
+}: {
+  profile: string;
+  fullname: string;
+  email: string;
+  role: string;
+}) => {
   return (
     <Card shadow='sm' radius={"lg"} padding='xl' component='a' target='_blank'>
       <Card.Section
@@ -10,26 +20,33 @@ const StaffCard = ({ fullname, role }: { fullname: string; role: string }) => {
           justifyContent: "center",
           alignItems: "center",
         }}>
-        <Avatar
-          size={"xl"}
-          src='https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-8.png'
-        />
+        <Avatar size={"xl"} color='teal'>
+          {profile}
+        </Avatar>
       </Card.Section>
-      <Flex w={"100%"} direction={"column"} align={"center"}>
+      <Flex w={"100%"} direction={"column"} gap={10} align={"center"}>
         <Text
-          fw={500}
+          fw={600}
           size='md'
-          mt='md'
+          lineClamp={1}
+          fz={"lg"}
+          c={"rgb(41, 61, 64)"}
           style={{
             textAlign: "center",
           }}>
           {fullname}
         </Text>
-
-        <Badge
-          size='lg'
-          variant='gradient'
-          gradient={{ from: "teal", to: "indigo", deg: 90 }}>
+        <Text
+          fw={500}
+          lineClamp={1}
+          fz={"md"}
+          size='md'
+          style={{
+            textAlign: "center",
+          }}>
+          {email}
+        </Text>
+        <Badge size='lg' fw={500} variant='filled'>
           {role}
         </Badge>
       </Flex>

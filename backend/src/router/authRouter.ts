@@ -4,6 +4,8 @@ import {
   adminLogin,
   staffLogin,
   StaffRegister,
+  getAllUsers,
+  getSingleUser,
 } from "../controller/authController";
 import multer from "multer";
 import path from "path";
@@ -17,6 +19,8 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage,
 });
+router.get("/admin/allUsers", getAllUsers);
+router.get("/admin/allUser/:id", getSingleUser);
 router.post("/admin/register", upload.single("photo"), adminRegister);
 router.post("/admin/login", adminLogin);
 router.post("/staff/register", upload.single("photo"), StaffRegister);

@@ -51,6 +51,10 @@ export const getHotelRevenue = async (req: Request, res: Response) => {
 export const getRoomPerformance = async (req: Request, res: Response) => {
   try {
     const allRooms = await rooms.find({ isDeleted: false });
+    const roomMap = new Map(
+      allRooms.map((room) => [room._id.toString(), room.roomNumber]),
+    );
+
     const currentYearStart = startOfYear(new Date());
     const currentYearEnd = endOfYear(new Date());
 
@@ -69,30 +73,77 @@ export const getRoomPerformance = async (req: Request, res: Response) => {
       const weekKey = `${booking.roomId}-${format(weekStart, "yyyy-MM-dd")}`;
       const monthKey = `${booking.roomId}-${format(monthStart, "yyyy-MM-dd")}`;
       //@ts-ignore
+
       if (!weeklyBookings[weekKey]) {
         //@ts-ignore
 
         weeklyBookings[weekKey] = {
+          roomId: booking.roomId,
+          roomNumber: roomMap.get(booking.roomId.toString()),
           count: 0,
           date: format(weekStart, "yyyy-MM-dd"),
         };
       }
       //@ts-ignore
-
       if (!monthlyBookings[monthKey]) {
         //@ts-ignore
 
         monthlyBookings[monthKey] = {
+          roomId: booking.roomId,
+          roomNumber: roomMap.get(booking.roomId.toString()),
           count: 0,
           date: format(monthStart, "yyyy-MM-dd"),
         };
       }
       //@ts-ignore
-
       weeklyBookings[weekKey].count++;
       //@ts-ignore
-
       monthlyBookings[monthKey].count++;
+    });
+
+    // Initialize objects to store the highest and lowest bookings for each week and month
+    const highestBookedWeeklyRooms = {};
+    const lowestBookedWeeklyRooms = {};
+    const highestBookedMonthlyRooms = {};
+    const lowestBookedMonthlyRooms = {};
+
+    // Function to update highest and lowest records
+    //@ts-ignore
+
+    const updateHighestLowest = (type, date, booking) => {
+      const highestRooms =
+        type === "weekly"
+          ? highestBookedWeeklyRooms
+          : highestBookedMonthlyRooms;
+      const lowestRooms =
+        type === "weekly" ? lowestBookedWeeklyRooms : lowestBookedMonthlyRooms;
+      //@ts-ignore
+      if (!highestRooms[date] || booking.count > highestRooms[date].count) {
+        //@ts-ignore
+
+        highestRooms[date] = booking;
+      }
+      //@ts-ignore
+      if (!lowestRooms[date] || booking.count < lowestRooms[date].count) {
+        //@ts-ignore
+
+        lowestRooms[date] = booking;
+      }
+    };
+
+    // Iterate over weekly bookings to find the highest and lowest booked rooms for each week
+    Object.keys(weeklyBookings).forEach((key) => {
+      //@ts-ignore
+      const booking = weeklyBookings[key];
+      updateHighestLowest("weekly", booking.date, booking);
+    });
+
+    // Iterate over monthly bookings to find the highest and lowest booked rooms for each month
+    Object.keys(monthlyBookings).forEach((key) => {
+      //@ts-ignore
+
+      const booking = monthlyBookings[key];
+      updateHighestLowest("monthly", booking.date, booking);
     });
 
     // Map the results back to the rooms
@@ -102,7 +153,6 @@ export const getRoomPerformance = async (req: Request, res: Response) => {
         .filter((key) => key.startsWith(`${room._id}-`))
         .map((key) => ({
           //@ts-ignore
-
           date: weeklyBookings[key].date,
           //@ts-ignore
 
@@ -112,7 +162,6 @@ export const getRoomPerformance = async (req: Request, res: Response) => {
         .filter((key) => key.startsWith(`${room._id}-`))
         .map((key) => ({
           //@ts-ignore
-
           date: monthlyBookings[key].date,
           //@ts-ignore
 
@@ -120,7 +169,14 @@ export const getRoomPerformance = async (req: Request, res: Response) => {
         })),
     }));
 
-    res.json(roomPerformance);
+    const highestAndLowestBookedRooms = {
+      highestBookedWeeklyRooms: Object.values(highestBookedWeeklyRooms),
+      lowestBookedWeeklyRooms: Object.values(lowestBookedWeeklyRooms),
+      highestBookedMonthlyRooms: Object.values(highestBookedMonthlyRooms),
+      lowestBookedMonthlyRooms: Object.values(lowestBookedMonthlyRooms),
+    };
+
+    res.json({ roomPerformance, highestAndLowestBookedRooms });
   } catch (error) {
     console.error("Failed to fetch room performances:", error);
     res.status(500).send({

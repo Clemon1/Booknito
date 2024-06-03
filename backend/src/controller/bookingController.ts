@@ -52,7 +52,7 @@ export const viewUserBookings = async (req: Request, res: Response) => {
 export const viewSingleBooking = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const singleBooking = await bookings.findById(id);
+    const singleBooking = await bookings.findById(id).populate("roomId").exec();
     res.status(200).json(singleBooking);
   } catch (err: any) {
     res.status(500).json(err.message);

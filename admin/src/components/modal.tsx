@@ -1,5 +1,13 @@
 import { useDisclosure } from "@mantine/hooks";
-import { Modal, Button, Tabs, Badge, SimpleGrid } from "@mantine/core";
+import {
+  Modal,
+  Button,
+  Tabs,
+  Badge,
+  SimpleGrid,
+  Text,
+  Flex,
+} from "@mantine/core";
 import { Suspense, useState } from "react";
 import { useGetVacantRoomQuery } from "../redux/RTK_Query/roomSlice";
 export const ModalComp = () => {
@@ -35,6 +43,13 @@ export const ModalComp = () => {
                 </Tabs.List>
 
                 <Tabs.Panel value='first' px={4} py={8}>
+                  {rooms && rooms.vacantRooms.length <= 0 && (
+                    <>
+                      <Flex w={"100%"} justify={"center"}>
+                        <Text fz={19}> No booked room today.</Text>
+                      </Flex>
+                    </>
+                  )}
                   <SimpleGrid cols={8} spacing={4}>
                     {rooms &&
                       rooms.vacantRooms.map((room) => (
@@ -46,6 +61,13 @@ export const ModalComp = () => {
                 </Tabs.Panel>
 
                 <Tabs.Panel px={4} py={8} value='second'>
+                  {rooms && rooms.bookedRooms.length <= 0 && (
+                    <>
+                      <Flex w={"100%"} justify={"center"}>
+                        <Text fz={19}> No booked room today.</Text>
+                      </Flex>
+                    </>
+                  )}
                   <SimpleGrid cols={8} spacing={4}>
                     {rooms &&
                       rooms.bookedRooms.map((room) => (

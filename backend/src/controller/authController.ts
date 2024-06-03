@@ -3,6 +3,44 @@ import users from "../model/usersModel";
 import bcrypt from "bcrypt";
 import { generateToken } from "../middleware/JWT";
 
+// Get all user
+export const getAllUsers = async (req: Request, res: Response) => {
+  try {
+    const { role } = req.query;
+    let findAllUser;
+    role === ""
+      ? (findAllUser = await users
+          .find({ isDeleted: false })
+          .sort({ createdAt: -1 })
+          .select("-password -bookmark")
+          .exec())
+      : (findAllUser = await users
+          .find({ role, isDeleted: false })
+          .sort({ createdAt: -1 })
+          .select("-password -bookmark")
+          .exec());
+
+    res.status(200).json(findAllUser);
+  } catch (err: any) {
+    res.status(500).json(err.message);
+  }
+};
+
+//Get a single user
+export const getSingleUser = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const singleUser = await users
+      .findById(id, { isDeleted: false })
+      .sort({ createdAt: -1 })
+      .select("-password -bookmark")
+      .exec();
+    res.status(200).json(singleUser);
+  } catch (err: any) {
+    res.status(500).json(err.message);
+  }
+};
+
 // Admin Registration
 export const adminRegister = async (req: Request, res: Response) => {
   try {

@@ -30,6 +30,10 @@ export const reportApi = createApi({
       query: (year) => `/revenue?year=${year}`,
       providesTags: ["report"],
     }),
+    getRoomReport: build.query<revenueType, void>({
+      query: () => `/roomPerformance`,
+      providesTags: ["report"],
+    }),
   }),
 });
 
@@ -37,4 +41,5 @@ export const {
   useGetUsersReportQuery,
   useGetBookingReportQuery,
   useGetRevenueReportQuery,
+  useGetRoomReportQuery,
 } = reportApi;

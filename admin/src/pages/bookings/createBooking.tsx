@@ -57,7 +57,7 @@ const CreateBooking = () => {
   const [adults, setAdults] = useState<number>(1);
   const [children, setChildren] = useState<number>(0);
 
-  const { data: room = [] } = useGetAllRoomQuery();
+  const { data: room = [] } = useGetAllRoomQuery("");
   const { data: singleRoom } = useSingleRoomQuery(roomId);
 
   const [active, setActive] = useState<number>(0);
@@ -445,6 +445,7 @@ const CreateBooking = () => {
                       bg={"blue"}
                       justify={"center"}
                       align={"center"}
+                      p={10}
                       style={{
                         borderRadius: 7,
                       }}>
@@ -488,6 +489,7 @@ const CreateBooking = () => {
                     <Flex
                       w={"100%"}
                       bg={"teal"}
+                      p={10}
                       justify={"center"}
                       align={"center"}
                       style={{

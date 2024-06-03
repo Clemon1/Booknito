@@ -20,6 +20,7 @@ import {
 } from "@tabler/icons-react";
 import { useCreateRoomMutation } from "../../redux/RTK_Query/roomSlice";
 import { notifications } from "@mantine/notifications";
+import { useNavigate } from "react-router-dom";
 
 const CreateRoom = () => {
   const [roomNumber, setRoomNumber] = useState<string>("");
@@ -41,7 +42,7 @@ const CreateRoom = () => {
     description,
   };
   console.log("form", body);
-
+  const navigate = useNavigate();
   const handleRoomForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -55,6 +56,8 @@ const CreateRoom = () => {
       perks.forEach((perk) => formData.append("perks", perk));
 
       await createRoom(formData).unwrap();
+      navigate("/rooms");
+
       notifications.show({
         title: "Booked Successfully",
         message: ``,

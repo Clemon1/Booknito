@@ -62,7 +62,7 @@ export const bookingApi = createApi({
       query: () => `/revenue`,
       providesTags: ["booking"],
     }),
-    singleBooking: build.query<IBooking, string>({
+    singleBooking: build.query<IBooking, string | undefined>({
       query: (id) => `/viewBooking/${id}`,
       providesTags: ["booking"],
     }),
