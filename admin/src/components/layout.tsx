@@ -178,7 +178,7 @@ const Layout: React.FC<propType> = ({ children }) => {
             </List.Item>
           </NavLink>
           <NavLink
-            to={"/reports"}
+            to={"/reports/revenue"}
             className={({ isActive }) =>
               isActive ? "nav-link-active" : "nav-link"
             }>

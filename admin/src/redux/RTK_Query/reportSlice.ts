@@ -18,15 +18,15 @@ export const reportApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: `${serverURL}/v1/analysis` }),
   tagTypes: ["report"],
   endpoints: (build) => ({
-    getUsersReport: build.query<reportResponse, void>({
+    getUsersReport: build.query<reportResponse, string | null>({
       query: (year) => `/users?year=${year}`,
       providesTags: ["report"],
     }),
-    getBookingReport: build.query<reportResponse, string>({
+    getBookingReport: build.query<reportResponse, string | null>({
       query: (year) => `/booking?year=${year}`,
       providesTags: ["report"],
     }),
-    getRevenueReport: build.query<revenueType, void>({
+    getRevenueReport: build.query<revenueType, string | null>({
       query: (year) => `/revenue?year=${year}`,
       providesTags: ["report"],
     }),
