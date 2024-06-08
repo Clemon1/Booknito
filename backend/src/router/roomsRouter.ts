@@ -15,7 +15,7 @@ import path from "path";
 const router = Router();
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, "./src/uploads"),
+  destination: (req, file, cb) => cb(null, "src/uploads/"),
   filename: function (req, file, callback) {
     callback(null, Date.now() + path.extname(file.originalname));
   },

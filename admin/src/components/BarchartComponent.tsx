@@ -11,8 +11,9 @@ export const BarchartComp = ({ data, name }: barProps) => {
       h={300}
       data={data}
       dataKey='month'
+      tooltipAnimationDuration={200}
       withLegend
-      series={[{ name: name, color: "purple" }]}
+      series={[{ name: name, color: "cyan.6", label: name }]}
       tickLine='y'
     />
   );

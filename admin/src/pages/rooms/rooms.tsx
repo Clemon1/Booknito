@@ -22,6 +22,7 @@ import {
   useGetVacantRoomQuery,
 } from "../../redux/RTK_Query/roomSlice";
 import { ModalComp } from "../../components/modal";
+import { Link } from "react-router-dom";
 
 const Rooms = () => {
   const [search, setSearch] = useState<string>("");
@@ -161,9 +162,12 @@ const Rooms = () => {
                     <Table.Td>{room.maxGuest}</Table.Td>
                     <Table.Td>
                       <Flex gap={10}>
-                        <Button bg={"cyan"} radius={"lg"}>
-                          <IconEdit size={20} />
-                        </Button>
+                        <Link to={`/rooms/${room._id}`}>
+                          <Button bg={"cyan"} radius={"lg"}>
+                            <IconEdit size={20} />
+                          </Button>
+                        </Link>
+
                         <Button bg={"red"} radius={"lg"}>
                           <IconTrashFilled size={20} />
                         </Button>

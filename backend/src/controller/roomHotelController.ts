@@ -5,6 +5,7 @@ import users from "../model/usersModel";
 import cloudinary from "../middleware/cloudinary";
 import bookings from "../model/bookingModel";
 import { endOfDay, startOfDay } from "date-fns";
+import { File } from "buffer";
 // View all rental homes
 interface view {
   _doc: object;
@@ -112,7 +113,7 @@ export const createRoom = async (req: Request, res: Response) => {
     //@ts-ignore
     const photo: [string] =
       //@ts-ignore
-      req.files["photos"] && req.files["photos"].map((file: any) => file.path);
+      req.files["photos"] && req.files["photos"].map((file: File) => file.path);
 
     console.log(req.body);
 

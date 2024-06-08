@@ -34,6 +34,16 @@ const ReportUsers = () => {
       align={"center"}
       className='print-container'
       gap={10}>
+      <Flex
+        w={"100%"}
+        className='print-title'
+        p={4}
+        justify={"center"}
+        align={"center"}>
+        <Text c={"rgb(41, 61, 64)"} fz={25} fw={700}>
+          Bookinito
+        </Text>
+      </Flex>
       <Flex w={"100%"} pb={5} justify={"space-between"} align={"center"}>
         <Text c={"#172a3a"} fw={600}>
           Users Report

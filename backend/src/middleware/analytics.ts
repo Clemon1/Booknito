@@ -89,8 +89,7 @@ export const getMonthlyRevenue = async (
       ]);
 
       const monthName = startDate.toLocaleDateString("default", {
-        month: "long",
-        year: "numeric",
+        month: "short",
       });
       const totalRevenue = revenue.length > 0 ? revenue[0].total : 0;
       monthlyRevenue.push({ month: monthName, revenue: totalRevenue });
