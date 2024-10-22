@@ -124,7 +124,13 @@ const Login = () => {
             />
           </Flex>
 
-          <Button w={"100%"} type='submit' bg={"#004346"} p={2} radius={"md"}>
+          <Button
+            loading={isLoading}
+            w={"100%"}
+            type='submit'
+            bg={"#004346"}
+            p={2}
+            radius={"md"}>
             {isLoading ? "Loading..." : "Login"}
           </Button>
         </form>
