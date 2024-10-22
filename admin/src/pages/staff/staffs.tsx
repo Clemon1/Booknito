@@ -9,13 +9,15 @@ import { useGetAllUsersQuery } from "../../redux/RTK_Query/authSlice";
 
 const Staffs: React.FC = () => {
   const [role, setRole] = useState<string>("");
-  const { data: users = [] } = useGetAllUsersQuery(role);
+  const { data: users = [] } = useGetAllUsersQuery(`${role}`);
   return (
     <Layout>
       <Flex w={"100%"} gap={10} direction={"column"}>
         <SearchFilter
           PlaceHolder='Search staff name'
           IconName={<IconSearch fontSize={18} />}
+          link={"#"}
+          onchange={(e) => setRole(e.target.value)}
           BtnName='New Staff'>
           <>
             <Select

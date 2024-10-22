@@ -26,7 +26,7 @@ export const authApi = createApi({
   tagTypes: ["auth"],
   endpoints: (build) => ({
     //Get all users
-    getAllUsers: build.query<AllUserResponse, void>({
+    getAllUsers: build.query<AllUserResponse, void | string>({
       query: (role) => `/admin/allUsers?role=${role}`,
       providesTags: ["auth"],
     }),
